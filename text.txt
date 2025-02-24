@@ -1,0 +1,16 @@
+tshark -i wlan0 -T json -l \
+-e frame.time \
+-e ip.src \
+-e ip.dst \
+-e _ws.col.Protocol \
+-e ip.proto \
+-e tcp.srcport \
+-e tcp.dstport \
+-e http.host \
+-e http.user_agent \
+-e dns.qry.name \
+-e dns.a \
+-e ip.geoip.dst_summary \
+-e _ws.col.Info \
+-e _ws.expert.message | jq --stream -c 'fromstream(1|truncate_stream(inputs))' | \
+wscat -c ws://localhost:4000/ws

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Traffic Monitoring</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .data-box {
+            background-color: #eceff1;
+            padding: 20px;
+            border-radius: 8px;
+            color: #333;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #757575;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Network Traffic</h1>
+        <div id="traffic-data" class="data-box">
+            <p>Waiting for data...</p>
+        </div>
+    </div>
+    
+    <script>
+        const socket = new WebSocket('ws://localhost:8080/ws'); // Connect to WebSocket server
+
+        const dataContainer = document.getElementById('traffic-data');
+
+        socket.onopen = () => {
+            console.log("Connected to WebSocket server");
+        };
+
+        socket.onmessage = (event) => {
+            // Append new data received from the server
+            const newData = document.createElement('p');
+            newData.textContent = event.data;
+            dataContainer.appendChild(newData);
+
+            // Scroll to the bottom to show the latest data
+            dataContainer.scrollTop = dataContainer.scrollHeight;
+        };
+
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+    </script>
+</body>
+</html>
