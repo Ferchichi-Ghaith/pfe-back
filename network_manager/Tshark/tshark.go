@@ -55,7 +55,7 @@ func main() {
 	// Create wscat command
 	wscatCmd := exec.Command("wscat",
 		"-c",
-		"ws://localhost:4000/843cf35d79f927bac5c197614c8844a4c7420fb2fcdb1cda1cbba4259aac8199",
+		"wss://ws-t7-production.up.railway.app/ghaith",
 	)
 
 	// Connect pipes between commands
