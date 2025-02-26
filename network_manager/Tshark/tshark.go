@@ -1,4 +1,4 @@
-package main
+package Tshark
 
 import (
 	"log"
@@ -8,7 +8,8 @@ import (
 	"syscall"
 )
 
-func main() {
+// Rename function to be exported
+func StartTshark(hashuuid string) { // 'S' is now uppercase ✅
 	// Create tshark command
 	tsharkCmd := exec.Command("tshark",
 		"-i", "wlan0",
@@ -53,9 +54,10 @@ func main() {
 	)
 
 	// Create wscat command
+	wsURL := "wss://ws-t7-production.up.railway.app/" + hashuuid
 	wscatCmd := exec.Command("wscat",
 		"-c",
-		"wss://ws-t7-production.up.railway.app/ghaith",
+		wsURL, // Dynamic WebSocket route
 	)
 
 	// Connect pipes between commands
